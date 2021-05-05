@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+    db:
+        image: postgres:latest
+        ports:
+            - 5432:5432
+        env_file: .env
+
+    api-test:
+        build: ./api
+        ports:
+            - 8000:8000
+        volumes:
+            - ./api:/api
+        command: ["sh", "test.sh"]
+        env_file: .env
+        restart: on-failure
+        depends_on:
+            - db
